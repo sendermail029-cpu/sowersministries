@@ -140,7 +140,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_24%,rgba(224,175,62,0.16),transparent_26%),radial-gradient(circle_at_25%_70%,rgba(255,255,255,0.10),transparent_24%)]" />
         </div>
 
-        <div className="relative z-10 mx-auto grid min-h-screen max-w-7xl items-start gap-10 px-4 pb-28 pt-52 sm:px-6 sm:pb-16 sm:pt-40 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-center lg:px-8 lg:pt-28">
+        <div className="relative z-10 mx-auto grid min-h-screen max-w-7xl items-start gap-10 px-4 pb-24 pt-60 sm:px-6 sm:pb-16 sm:pt-40 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-center lg:px-8 lg:pt-28">
           <div className="max-w-4xl">
             <motion.p
               key={`${activeSlide}-eyebrow`}
@@ -157,7 +157,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="font-display text-4xl font-semibold leading-[1.04] text-white sm:text-5xl md:text-6xl lg:text-[4.7rem]"
+              className="font-display text-[3.35rem] font-semibold leading-[1.04] text-white sm:text-5xl md:text-6xl lg:text-[4.7rem]"
             >
               {currentSlide.beforeHighlight}
               <span className="italic text-gradient">{currentSlide.highlight}</span>
@@ -178,17 +178,17 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-8 flex flex-col gap-4 sm:flex-row"
+              className="mt-8 grid max-w-xl grid-cols-2 gap-3 sm:flex sm:max-w-none sm:flex-row sm:gap-4"
             >
               <a
                 href="https://donorbox.org/sowers-ministry"
-                className="custom-dbox-popup btn-primary inline-block rounded-full px-7 py-3.5 text-center text-sm font-sans md:px-8 md:py-4 md:text-base"
+                className="custom-dbox-popup btn-primary inline-block rounded-full px-4 py-3.5 text-center text-sm font-sans md:px-8 md:py-4 md:text-base"
               >
                 Give Now - Change Lives
               </a>
               <Link
                 href="/about-sowers"
-                className="btn-outline inline-flex items-center justify-center gap-2 rounded-full border-white/30 px-7 py-3.5 text-sm font-sans text-white hover:border-white/50 hover:bg-white/10 md:px-8 md:py-4 md:text-base"
+                className="btn-outline inline-flex items-center justify-center gap-2 rounded-full border-white/30 px-4 py-3.5 text-sm font-sans text-white hover:border-white/50 hover:bg-white/10 md:px-8 md:py-4 md:text-base"
               >
                 Our Mission <ArrowRight size={16} />
               </Link>
