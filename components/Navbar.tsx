@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
@@ -26,9 +27,19 @@ const eventLinks = [
 ]
 
 export default function Navbar() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [eventsOpen, setEventsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+
+  const isIndiaMode =
+    pathname === '/india-open' || pathname.startsWith('/india-open/')
+
+  const getHref = (href: string) => {
+    if (!isIndiaMode) return href
+    if (href === '/') return '/india-open'
+    return `/india-open${href}`
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,9 +65,10 @@ export default function Navbar() {
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex h-16 items-center">
-
-          {/* Logo Section */}
-          <Link href="/" className="hidden lg:flex shrink-0 items-center pr-6">
+          <Link
+            href={getHref('/')}
+            className="hidden lg:flex shrink-0 items-center pr-6"
+          >
             <Image
               src="/logo-opt.webp"
               alt="SOWERS Ministry logo"
@@ -67,25 +79,25 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Mobile Logo */}
-         {/* Mobile Logo */}
-<Link href="/" className="flex lg:hidden shrink-0 items-center">
-  <Image
-    src="/logo-opt.webp"
-    alt="SOWERS Ministry logo"
-    width={293}
-    height={84}
-    priority
-    className="h-14 sm:h-16 w-auto"
-  />
-</Link>
+          <Link
+            href={getHref('/')}
+            className="flex lg:hidden shrink-0 items-center"
+          >
+            <Image
+              src="/logo-opt.webp"
+              alt="SOWERS Ministry logo"
+              width={293}
+              height={84}
+              priority
+              className="h-14 sm:h-16 w-auto"
+            />
+          </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-1 xl:gap-2 px-2">
             {navLinksBeforeEvents.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={getHref(link.href)}
                 className={`relative px-2 xl:px-3 py-2 text-[12px] xl:text-[13px] 2xl:text-[14px] font-sans font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 group ${textColorClass}`}
               >
                 {link.label}
@@ -105,7 +117,9 @@ export default function Navbar() {
                 Events
                 <ChevronDown
                   size={15}
-                  className={`transition-transform duration-300 ${eventsOpen ? 'rotate-180' : ''}`}
+                  className={`transition-transform duration-300 ${
+                    eventsOpen ? 'rotate-180' : ''
+                  }`}
                 />
                 <span className="absolute bottom-0 left-2 right-2 h-0.5 origin-left scale-x-0 bg-gold-500 transition-transform duration-300 group-hover:scale-x-100" />
               </button>
@@ -120,7 +134,7 @@ export default function Navbar() {
                 {eventLinks.map((link) => (
                   <Link
                     key={link.href}
-                    href={link.href}
+                    href={getHref(link.href)}
                     className="block rounded-xl px-4 py-3 text-sm font-semibold text-navy-950 transition hover:bg-cream-50 hover:text-gold-700"
                   >
                     {link.label}
@@ -132,7 +146,7 @@ export default function Navbar() {
             {navLinksAfterEvents.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={getHref(link.href)}
                 className={`relative px-2 xl:px-3 py-2 text-[12px] xl:text-[13px] 2xl:text-[14px] font-sans font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 group ${textColorClass}`}
               >
                 {link.label}
@@ -141,10 +155,9 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Donate Button Desktop */}
           <div className="hidden lg:flex shrink-0 items-center pl-6">
             <Link
-              href="/donate"
+              href={getHref('/donate')}
               className={`rounded-full px-5 xl:px-6 2xl:px-7 py-2.5 text-sm font-bold whitespace-nowrap transition-all duration-300 transform hover:scale-105 shadow-lg ${
                 scrolled
                   ? 'bg-black text-white hover:bg-gold-600 lg:bg-gold-500 lg:text-black lg:hover:bg-white'
@@ -155,7 +168,6 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={`ml-auto lg:hidden flex h-12 w-12 items-center justify-center rounded-2xl border transition-colors ${
@@ -170,7 +182,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -189,7 +200,7 @@ export default function Navbar() {
                   transition={{ delay: i * 0.03 }}
                 >
                   <Link
-                    href={link.href}
+                    href={getHref(link.href)}
                     onClick={() => setIsOpen(false)}
                     className="block rounded-2xl border border-transparent px-4 py-3 text-lg font-semibold text-navy-950 transition hover:border-[#d9d5ca] hover:bg-[#f8f3e7]"
                   >
@@ -212,7 +223,9 @@ export default function Navbar() {
                   Events
                   <ChevronDown
                     size={18}
-                    className={`transition-transform duration-300 ${eventsOpen ? 'rotate-180' : ''}`}
+                    className={`transition-transform duration-300 ${
+                      eventsOpen ? 'rotate-180' : ''
+                    }`}
                   />
                 </button>
 
@@ -228,7 +241,7 @@ export default function Navbar() {
                       {eventLinks.map((link) => (
                         <Link
                           key={link.href}
-                          href={link.href}
+                          href={getHref(link.href)}
                           onClick={() => {
                             setIsOpen(false)
                             setEventsOpen(false)
@@ -248,10 +261,12 @@ export default function Navbar() {
                   key={link.href}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: (navLinksBeforeEvents.length + 1 + i) * 0.03 }}
+                  transition={{
+                    delay: (navLinksBeforeEvents.length + 1 + i) * 0.03,
+                  }}
                 >
                   <Link
-                    href={link.href}
+                    href={getHref(link.href)}
                     onClick={() => setIsOpen(false)}
                     className="block rounded-2xl border border-transparent px-4 py-3 text-lg font-semibold text-navy-950 transition hover:border-[#d9d5ca] hover:bg-[#f8f3e7]"
                   >
@@ -261,7 +276,7 @@ export default function Navbar() {
               ))}
 
               <Link
-                href="/donate"
+                href={getHref('/donate')}
                 onClick={() => setIsOpen(false)}
                 className="mt-5 rounded-2xl bg-gold-500 px-4 py-4 text-center text-lg font-bold text-black shadow-[0_14px_30px_rgba(214,172,77,0.28)]"
               >

@@ -1,38 +1,50 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { geolocation } from '@vercel/functions'
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  const { country } = geolocation(request)
+const INDIA_PREFIX = '/india-open'
 
-  // Allow Next.js internal files
-  if (
+function isPublicAsset(pathname: string) {
+  return (
     pathname.startsWith('/_next') ||
     pathname === '/favicon.ico' ||
     pathname === '/robots.txt' ||
     pathname === '/sitemap.xml'
-  ) {
+  )
+}
+
+function isAdminPath(pathname: string) {
+  return pathname === '/admin' || pathname.startsWith('/admin/')
+}
+
+function stripIndiaPrefix(pathname: string) {
+  if (pathname === INDIA_PREFIX) return '/'
+  return pathname.replace(/^\/india-open/, '') || '/'
+}
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const { country } = geolocation(request)
+
+  if (isPublicAsset(pathname)) {
     return NextResponse.next()
   }
 
-  // Allow India access page
-  if (pathname === '/india-open' || pathname.startsWith('/india-open/')) {
+  if (isAdminPath(pathname)) {
     return NextResponse.next()
   }
 
-  // Allow admin panel (for you in India)
-  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
-    return NextResponse.next()
+  if (pathname === INDIA_PREFIX || pathname.startsWith(`${INDIA_PREFIX}/`)) {
+    const url = request.nextUrl.clone()
+    url.pathname = stripIndiaPrefix(pathname)
+    return NextResponse.rewrite(url)
   }
 
-  // Block India for everything else
   if (country === 'IN') {
     return new NextResponse('This website is not available in India.', {
       status: 403,
     })
   }
 
-  // Allow all other countries
   return NextResponse.next()
 }
 
