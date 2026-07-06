@@ -133,8 +133,7 @@ export function middleware(request: NextRequest) {
               <div class="icon">🚫</div>
             </div>
             <h1>Access Restricted</h1>
-           <p>Sorry, we are unable to provide access to this content in India.</p>
-          
+           <p>Sorry, access to this content is currently unavailable.</p>
             <div class="note">SOWERS Ministry</div>
           </div>
         </body>
