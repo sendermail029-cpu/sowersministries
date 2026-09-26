@@ -37,6 +37,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 ['About SOWERS', '/about-sowers'],
+                ['Statement of Faith', '/statement-of-faith'],
                 ['About Pastor Jay', '/about-pastor-jay'],
                 ['Church Network', '/church-network'],
                 ['Board of Directors', '/board-of-directors'],

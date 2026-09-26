@@ -6,14 +6,17 @@ import {
   Bus, 
   MapPin, 
   Heart, 
-  BookOpen, 
-  Church, 
+  Laptop,
+  Church,
   Users, 
   Gamepad2, 
   Construction, 
   ArrowUpRight,
   Sparkles,
-  Calendar
+  Calendar,
+  CheckCircle2,
+  Zap,
+  GraduationCap
 } from 'lucide-react';
 
 // --- CUSTOM COMPONENTS ---
@@ -29,16 +32,56 @@ interface VillageActivity {
   image: string;
   images?: string[];
   icon: React.ReactNode;
+  skills?: { heading: string; items: string[] }[];
 }
 
 // --- DATA: THE FIVE PILLARS ---
 const villageActivities: VillageActivity[] = [
   {
     title: 'Skill Development Centre',
-    category: 'Biblical Training',
-    description: 'Equipping believers through intensive Biblical studies and communication development. We focus on training individuals in effective teaching, public speaking, and theological clarity.',
+    category: 'Livelihood & Skills',
+    description: 'Empowering unemployed women and youth with practical, job-ready skills. Through hands-on training in soft skills, computers, and vocational trades, we help people earn a dignified income and build a brighter future for their families.',
     image: '/sv (2).webp',
-    icon: <BookOpen className="w-6 h-6" />,
+    icon: <Laptop className="w-6 h-6" />,
+    skills: [
+      {
+        heading: 'Soft Skills',
+        items: [
+          'Spoken English',
+          'Communication Skills',
+          'Personality Development',
+          'Interview Preparation',
+          'Leadership & Teamwork',
+          'Time Management',
+        ],
+      },
+      {
+        heading: 'Computer & IT Skills',
+        items: [
+          'Basic Computer Skills',
+          'MS Office (Word, Excel, PowerPoint)',
+          'Typing & Data Entry',
+          'Internet & Email',
+          'Digital Payments & Online Services',
+          'Accounting Basics (Tally)',
+          'Programming (Python, Java, C, JavaScript)',
+          'Web Development (HTML, CSS)',
+          'AI & Machine Learning Programmes',
+          'Data Science & Analytics',
+        ],
+      },
+      {
+        heading: 'Vocational Skills for Women & Youth',
+        items: [
+          'Tailoring & Sewing Machines',
+          'Handicrafts',
+          'Embroidery & Aari Work',
+          'Candle & Soap Making',
+          'Beautician Training',
+          'Mobile Phone Repair',
+        ],
+      },
+    ],
   },
   {
     title: 'Embracing Life',
@@ -68,6 +111,35 @@ const villageActivities: VillageActivity[] = [
     description: 'A global bridge for ministry and service. This dedicated space hosts visiting ministers and partners, ensuring a constant exchange of wisdom and skills that enriches our local village.',
     image: '/sv (5).webp',
     icon: <Users className="w-6 h-6" />,
+  },
+];
+
+const progressMilestones = [
+  {
+    title: '1 Acre Land Procured',
+    description: 'The land for Sowers Village has been secured, levelled, and fenced - ready for the work ahead.',
+    icon: <MapPin className="w-6 h-6" />,
+    images: [
+      { src: '/village-progress/land-1.webp', alt: 'Land being levelled at Sowers Village' },
+      { src: '/village-progress/land-2.webp', alt: 'New fencing around the Sowers Village land' },
+    ],
+  },
+  {
+    title: 'Water & Electricity Installed',
+    description: 'A borewell has been drilled and electricity has been brought to the site, providing the essentials for the village.',
+    icon: <Zap className="w-6 h-6" />,
+    images: [
+      { src: '/village-progress/water-electricity-1.webp', alt: 'Electricity pole and transformer being installed' },
+      { src: '/village-progress/water-electricity-2.webp', alt: 'Borewell being drilled for water supply' },
+    ],
+  },
+  {
+    title: 'Facility Used for Graduation',
+    description: 'The site is already serving the ministry - it has hosted a graduation ceremony for our students.',
+    icon: <GraduationCap className="w-6 h-6" />,
+    images: [
+      { src: '/village-progress/graduation-facility.webp', alt: 'Aerial view of the Sowers Village site set up for graduation' },
+    ],
   },
 ];
 
@@ -113,7 +185,7 @@ export default function SowersVillagePage() {
               <div className="p-3 bg-white/20 rounded-2xl text-white"><Construction className="w-6 h-6" /></div>
               <h4 className="font-serif text-xl">Current Status</h4>
             </div>
-            <p className="text-sm text-white/80">Planning is complete; physical construction is advancing steadily.</p>
+            <p className="text-sm text-white/80">1 Acre land procured</p>
           </div>
         </div>
       </section>
@@ -189,6 +261,86 @@ export default function SowersVillagePage() {
                     <p className="text-lg lg:text-xl text-navy-900/60 leading-relaxed max-w-xl">
                       {activity.description}
                     </p>
+
+                    {activity.skills && (
+                      <div className="mt-8 space-y-6 max-w-xl">
+                        {activity.skills.map((group) => (
+                          <div key={group.heading}>
+                            <p className="mb-3 text-xs font-bold uppercase tracking-widest text-navy-950/70">
+                              {group.heading}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {group.items.map((item) => (
+                                <span
+                                  key={item}
+                                  className="rounded-full border border-gold-100 bg-gold-50 px-3 py-1.5 text-sm font-semibold text-gold-700"
+                                >
+                                  {item}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- SECTION 1B: ON-SITE PROGRESS --- */}
+      <section className="py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-16 text-center">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-gold-600 block mb-4">On-Site Progress</span>
+            <h2 className="font-serif text-4xl md:text-6xl text-navy-950 mb-6">Milestones Reached</h2>
+            <div className="h-1 w-20 bg-gold-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="relative space-y-16 lg:space-y-20">
+            {progressMilestones.map((milestone, i) => (
+              <FadeInSection key={milestone.title} direction="up">
+                <div className="rounded-[2.5rem] border border-gold-100 bg-white p-6 shadow-sm sm:p-10">
+                  <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#1b5e20_0%,#2e8a44_55%,#6edc5a_130%)] text-white shadow-lg">
+                        {milestone.icon}
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold uppercase tracking-widest text-gold-600">
+                          Milestone {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <h3 className="font-serif text-3xl text-navy-950 md:text-4xl">{milestone.title}</h3>
+                      </div>
+                    </div>
+                    <span className="inline-flex w-fit items-center gap-2 rounded-full bg-green-50 px-4 py-2 text-sm font-bold text-[#2e8a44]">
+                      <CheckCircle2 className="h-4 w-4" />
+                      Completed
+                    </span>
+                  </div>
+
+                  <p className="mb-8 max-w-3xl text-lg text-navy-900/60 leading-relaxed">{milestone.description}</p>
+
+                  <div className={`grid gap-5 ${milestone.images.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+                    {milestone.images.map((image) => (
+                      <div
+                        key={image.src}
+                        className={`group relative overflow-hidden rounded-[2rem] border border-gold-100 ${
+                          milestone.images.length > 1 ? 'aspect-[4/3]' : 'aspect-[4/3] sm:aspect-[16/8]'
+                        }`}
+                      >
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          sizes={milestone.images.length > 1 ? '(max-width: 640px) 100vw, 50vw' : '100vw'}
+                          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </FadeInSection>

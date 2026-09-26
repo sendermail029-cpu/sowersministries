@@ -253,9 +253,9 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <div className="text-[0.7rem] font-bold uppercase tracking-widest text-navy-950/50">Location</div>
-                        <a href="https://www.google.com/maps/place/30501+Rollingoak+Dr,+Bear+Valley+Springs,+CA+93561,+USA/@35.1766271,-118.6651064,17z/data=!3m1!4b1!4m5!3m4!1s0x80c1fd848ece99c1:0x4cd701a5ff49a951!8m2!3d35.1766271!4d-118.6651064?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className={`text-sm font-semibold ${gradientTextClass}`}>
+                        <p className={`text-sm font-semibold ${gradientTextClass}`}>
                           30510 Rollingoak Dr, USA
-                        </a>
+                        </p>
                       </div>
                     </div>
                   </div>

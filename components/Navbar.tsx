@@ -7,9 +7,22 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
-const navLinksBeforeEvents = [
+type NavLink = {
+  label: string
+  href: string
+  children?: { label: string; href: string }[]
+}
+
+const navLinksBeforeEvents: NavLink[] = [
   { label: 'Home', href: '/' },
-  { label: 'About Sowers', href: '/about-sowers' },
+  {
+    label: 'About Sowers',
+    href: '/about-sowers',
+    children: [
+      { label: 'About Sowers', href: '/about-sowers' },
+      { label: 'Statement of Faith', href: '/statement-of-faith' },
+    ],
+  },
   { label: 'Sowers Village', href: '/sowers-village' },
   { label: 'About Pastor Jay', href: '/about-pastor-jay' },
   { label: 'Church Network', href: '/church-network' },
@@ -30,6 +43,7 @@ export default function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [eventsOpen, setEventsOpen] = useState(false)
+  const [sowersOpen, setSowersOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   const isIndiaMode =
@@ -94,16 +108,57 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden lg:flex min-w-0 flex-1 items-center justify-center gap-1 xl:gap-2 px-2">
-            {navLinksBeforeEvents.map((link) => (
-              <Link
-                key={link.href}
-                href={getHref(link.href)}
-                className={`relative px-2 xl:px-3 py-2 text-[12px] xl:text-[13px] 2xl:text-[14px] font-sans font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 group ${textColorClass}`}
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-2 right-2 h-0.5 origin-left scale-x-0 bg-gold-500 transition-transform duration-300 group-hover:scale-x-100" />
-              </Link>
-            ))}
+            {navLinksBeforeEvents.map((link) =>
+              link.children ? (
+                <div
+                  key={link.href}
+                  className="relative"
+                  onMouseEnter={() => setSowersOpen(true)}
+                  onMouseLeave={() => setSowersOpen(false)}
+                >
+                  <Link
+                    href={getHref(link.href)}
+                    className={`relative flex items-center gap-1 px-2 xl:px-3 py-2 text-[12px] xl:text-[13px] 2xl:text-[14px] font-sans font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 group ${textColorClass}`}
+                  >
+                    {link.label}
+                    <ChevronDown
+                      size={15}
+                      className={`transition-transform duration-300 ${
+                        sowersOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                    <span className="absolute bottom-0 left-2 right-2 h-0.5 origin-left scale-x-0 bg-gold-500 transition-transform duration-300 group-hover:scale-x-100" />
+                  </Link>
+
+                  <div
+                    className={`absolute left-1/2 top-full z-50 mt-3 w-60 -translate-x-1/2 rounded-2xl border border-white/15 bg-white/95 p-2 shadow-2xl backdrop-blur-md transition-all duration-200 before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 ${
+                      sowersOpen
+                        ? 'visible translate-y-0 opacity-100'
+                        : 'invisible -translate-y-2 opacity-0'
+                    }`}
+                  >
+                    {link.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={getHref(child.href)}
+                        className="block rounded-xl px-4 py-3 text-sm font-semibold text-navy-950 transition hover:bg-cream-50 hover:text-gold-700"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={getHref(link.href)}
+                  className={`relative px-2 xl:px-3 py-2 text-[12px] xl:text-[13px] 2xl:text-[14px] font-sans font-semibold tracking-tight whitespace-nowrap transition-colors duration-300 group ${textColorClass}`}
+                >
+                  {link.label}
+                  <span className="absolute bottom-0 left-2 right-2 h-0.5 origin-left scale-x-0 bg-gold-500 transition-transform duration-300 group-hover:scale-x-100" />
+                </Link>
+              )
+            )}
 
             <div
               className="relative"
@@ -199,13 +254,57 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.03 }}
                 >
-                  <Link
-                    href={getHref(link.href)}
-                    onClick={() => setIsOpen(false)}
-                    className="block rounded-2xl border border-transparent px-4 py-3 text-lg font-semibold text-navy-950 transition hover:border-[#d9d5ca] hover:bg-[#f8f3e7]"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.children ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setSowersOpen((current) => !current)}
+                        className="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-lg font-semibold text-navy-950 transition hover:bg-[#f8f3e7]"
+                      >
+                        {link.label}
+                        <ChevronDown
+                          size={18}
+                          className={`transition-transform duration-300 ${
+                            sowersOpen ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {sowersOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="overflow-hidden pl-4"
+                          >
+                            {link.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={getHref(child.href)}
+                                onClick={() => {
+                                  setIsOpen(false)
+                                  setSowersOpen(false)
+                                }}
+                                className="block rounded-xl px-4 py-3 text-base font-medium text-navy-950/80 transition hover:bg-[#f8f3e7]"
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <Link
+                      href={getHref(link.href)}
+                      onClick={() => setIsOpen(false)}
+                      className="block rounded-2xl border border-transparent px-4 py-3 text-lg font-semibold text-navy-950 transition hover:border-[#d9d5ca] hover:bg-[#f8f3e7]"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
 
