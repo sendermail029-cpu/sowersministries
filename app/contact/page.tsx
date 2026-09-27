@@ -246,19 +246,37 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-[2rem] border border-white/40 bg-white/55 backdrop-blur-xl p-5 shadow-sm">
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-navy-950 shadow-lg">
-                        <MapPin size={18} className="text-gold-400" />
-                      </div>
-                      <div>
-                        <div className="text-[0.7rem] font-bold uppercase tracking-widest text-navy-950/50">Location</div>
-                        <p className={`text-sm font-semibold ${gradientTextClass}`}>
-                          30510 Rollingoak Dr, USA
-                        </p>
+                  {[
+                    {
+                      label: 'USA',
+                      lines: ['SOWERS Ministry', '30510 ROLLING OAK', 'TEHACHAPI, CALIFORNIA 93561', 'U S A.'],
+                    },
+                    {
+                      label: 'Canada',
+                      lines: ['SOWERS MINISTRY', '43216 South Sumas Road,', 'Chilliwack, BC V2R 4L6', 'Canada'],
+                    },
+                  ].map((address) => (
+                    <div
+                      key={address.label}
+                      className="rounded-[2rem] border border-white/40 bg-white/55 backdrop-blur-xl p-5 shadow-sm"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-navy-950 shadow-lg">
+                          <MapPin size={18} className="text-gold-400" />
+                        </div>
+                        <div>
+                          <div className="text-[0.7rem] font-bold uppercase tracking-widest text-navy-950/50">{address.label}</div>
+                          <address className={`not-italic text-sm font-semibold leading-6 ${gradientTextClass}`}>
+                            {address.lines.map((line) => (
+                              <span key={line} className="block">
+                                {line}
+                              </span>
+                            ))}
+                          </address>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
 
                   <div className="rounded-[2rem] border border-white/40 bg-white/55 backdrop-blur-xl p-5 shadow-sm">
                     <div className="flex items-center gap-4">
@@ -275,7 +293,8 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="relative overflow-hidden rounded-[2.5rem] border border-gold-500/15 bg-navy-950 p-8 shadow-2xl">
+                {/* Prayer Requests card hidden for now — remove `hidden` to show it again */}
+                <div className="hidden relative overflow-hidden rounded-[2.5rem] border border-gold-500/15 bg-navy-950 p-8 shadow-2xl">
                   <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-gold-400/10 blur-3xl" />
                   
                   <div className="relative">

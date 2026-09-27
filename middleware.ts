@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { geolocation } from '@vercel/functions'
 
 const INDIA_PREFIX = '/india-open'
+const INDIA_ACCESS_COOKIE = 'india_access'
 
 function isPublicAsset(pathname: string) {
   return (
@@ -39,10 +40,19 @@ export function middleware(request: NextRequest) {
   if (pathname === INDIA_PREFIX || pathname.startsWith(`${INDIA_PREFIX}/`)) {
     const url = request.nextUrl.clone()
     url.pathname = stripIndiaPrefix(pathname)
-    return NextResponse.rewrite(url)
+    const response = NextResponse.rewrite(url)
+    // Remember access so normal site links (header/footer) keep working
+    response.cookies.set(INDIA_ACCESS_COOKIE, '1', {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 365,
+    })
+    return response
   }
 
-  if (country === 'IN') {
+  if (country === 'IN' && request.cookies.get(INDIA_ACCESS_COOKIE)?.value !== '1') {
     return new NextResponse(
       `
       <!DOCTYPE html>
