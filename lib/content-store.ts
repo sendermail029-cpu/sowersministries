@@ -17,6 +17,7 @@ const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
 const newsletterFile = path.join(dataDir, 'newsletter.json')
 const galleryFile = path.join(dataDir, 'gallery.json')
 const updateFile = path.join(dataDir, 'update.json')
+const updateArchiveFile = path.join(dataDir, 'update-archive.json')
 const updatesCurrentDir = path.join(uploadsDir, 'updates', 'current')
 
 async function ensureDir(dirPath: string) {
@@ -131,6 +132,14 @@ export async function getLatestUpdate(): Promise<UpdateEntry> {
 
   await writeJsonFile(updateFile, fallback)
   return fallback
+}
+
+// Earlier updates, newest first
+export async function getArchivedUpdates(): Promise<UpdateEntry[]> {
+  const archived = (await readJsonFileOrNull<UpdateEntry[]>(updateArchiveFile)) ?? []
+  return [...archived].sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  )
 }
 
 export async function saveLatestUpdate(nextValue: UpdateEntry) {
